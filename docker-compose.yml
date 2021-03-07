@@ -1,0 +1,28 @@
+version: '2'
+services:
+  web:
+    build: .
+    depends_on:
+      - mydb
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - /c/Users/H/Desktop/Docker/odoo/config:/etc/odoo
+      - /c/Users/H/Desktop/Docker/odoo/addons:/opt
+    environment:
+    - HOST=mydb
+    - USER=odoo
+    - PASSWORD=myodoo
+    command: odoo -u all
+  mydb:
+    image: postgres:10
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=myodoo
+      - POSTGRES_USER=odoo
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
+volumes:
+  odoo-web-data:
+  odoo-db-data:
